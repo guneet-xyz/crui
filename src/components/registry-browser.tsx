@@ -34,13 +34,21 @@ export function RegistryBrowser() {
     setSelectedTag(tag)
   }
 
+  const handleSidebarSelectTag = (repo: string, tag: string) => {
+    setSelectedRepo(repo)
+    setSelectedTag(tag)
+    setSheetOpen(false)
+  }
+
   return (
     <div className="flex flex-1 overflow-hidden">
       {/* Desktop sidebar */}
       <aside className="border-border hidden w-72 shrink-0 border-r md:block">
         <RepoSidebar
           selectedRepo={selectedRepo}
+          selectedTag={selectedTag}
           onSelectRepo={handleSelectRepo}
+          onSelectTag={handleSidebarSelectTag}
         />
       </aside>
 
@@ -61,7 +69,9 @@ export function RegistryBrowser() {
             <div className="mt-4 h-[calc(100vh-8rem)]">
               <RepoSidebar
                 selectedRepo={selectedRepo}
+                selectedTag={selectedTag}
                 onSelectRepo={handleSelectRepo}
+                onSelectTag={handleSidebarSelectTag}
               />
             </div>
           </SheetContent>
