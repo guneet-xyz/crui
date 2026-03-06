@@ -16,10 +16,32 @@ docker run -d \
   -p 3000:3000 \
   -e REGISTRY_URL=https://registry.example.com \
   -e SESSION_SECRET=$(openssl rand -base64 32) \
-  guneet/crui:latest
+  kvqn/crui:latest
 ```
 
 Then open [http://localhost:3000](http://localhost:3000).
+
+## Docker Compose
+
+```yaml
+services:
+  crui:
+    image: kvqn/crui:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - REGISTRY_URL=https://registry.example.com
+      - SESSION_SECRET=your-secret-here-min-32-characters
+      # Optional: provide default credentials so users aren't prompted to log in
+      # - REGISTRY_USERNAME=admin
+      # - REGISTRY_PASSWORD=password
+      # Optional: override the registry URL shown in the UI
+      # - DISPLAY_REGISTRY_URL=registry.example.com
+```
+
+```bash
+docker compose up -d
+```
 
 ## Environment Variables
 
