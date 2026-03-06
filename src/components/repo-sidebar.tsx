@@ -7,7 +7,6 @@ import {
   ChevronRight,
   FolderClosed,
   FolderOpen,
-  Loader2,
   Search,
   Tag,
 } from "lucide-react"
@@ -316,30 +315,28 @@ export function RepoSidebar({
 }: RepoSidebarProps) {
   const [repositories, setRepositories] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
-  const [loadingMore, setLoadingMore] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [hasMore, setHasMore] = useState(false)
-  const [lastRepo, setLastRepo] = useState<string | undefined>()
   const [error, setError] = useState<string | null>(null)
   const [expandedNamespaces, setExpandedNamespaces] = useState<Set<string>>(
     new Set(),
   )
   const [expandedImages, setExpandedImages] = useState<Set<string>>(new Set())
 
-  const loadRepositories = useCallback(async (last?: string) => {
+  const loadRepositories = useCallback(async () => {
     try {
-      if (last) {
-        setLoadingMore(true)
-      } else {
-        setLoading(true)
+      setLoading(true)
+      const allRepos: string[] = []
+      let last: string | undefined
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      while (true) {
+        const result = await fetchRepositoriesAction(last)
+        allRepos.push(...result.repositories)
+        if (!result.hasMore) break
+        last = result.last
       }
 
-      const result = await fetchRepositoriesAction(last)
-      setRepositories((prev) =>
-        last ? [...prev, ...result.repositories] : result.repositories,
-      )
-      setHasMore(result.hasMore)
-      setLastRepo(result.last)
+      setRepositories(allRepos)
       setError(null)
     } catch (err) {
       setError(
@@ -347,7 +344,6 @@ export function RepoSidebar({
       )
     } finally {
       setLoading(false)
-      setLoadingMore(false)
     }
   }, [])
 
@@ -475,22 +471,6 @@ export function RepoSidebar({
                   onSelectTag={onSelectTag}
                 />
               ))}
-              {hasMore && !searchQuery && (
-                <button
-                  onClick={() => void loadRepositories(lastRepo)}
-                  disabled={loadingMore}
-                  className="text-muted-foreground hover:bg-accent hover:text-accent-foreground flex w-full items-center justify-center gap-2 rounded-md px-3 py-2 text-sm transition-colors"
-                >
-                  {loadingMore ? (
-                    <>
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      Loading...
-                    </>
-                  ) : (
-                    "Load more"
-                  )}
-                </button>
-              )}
             </>
           )}
         </div>
