@@ -37,6 +37,12 @@ export function TagList({ repoName, selectedTag, onSelectTag }: TagListProps) {
     void loadTags()
   }, [loadTags])
 
+  useEffect(() => {
+    if (!loading && !error && selectedTag === null && tags.includes("latest")) {
+      onSelectTag("latest")
+    }
+  }, [loading, error, selectedTag, tags, onSelectTag])
+
   if (loading) {
     return (
       <div className="space-y-2">
