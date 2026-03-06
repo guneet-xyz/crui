@@ -4,6 +4,12 @@ import { Box, LogOut } from "lucide-react"
 
 import { Button } from "~/components/ui/button"
 import { Separator } from "~/components/ui/separator"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "~/components/ui/tooltip"
 
 import { GitHubIcon } from "./icons"
 import { ThemeToggle } from "./theme-toggle"
@@ -30,26 +36,38 @@ export function Header({
         </span>
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-muted-foreground text-xs">
-          v{process.env.NEXT_PUBLIC_APP_VERSION}
-        </span>
-        <Button variant="ghost" size="icon" className="group" asChild>
-          <a
-            href="https://github.com/guneet-xyz/crui"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <GitHubIcon />
-            <span className="sr-only">GitHub</span>
-          </a>
-        </Button>
-        <ThemeToggle />
-        {isAuthenticated && onLogout && (
-          <Button variant="ghost" size="icon" onClick={onLogout}>
-            <LogOut className="h-4 w-4" />
-            <span className="sr-only">Logout</span>
-          </Button>
-        )}
+        <TooltipProvider delayDuration={0}>
+          <span className="text-muted-foreground text-xs">
+            v{process.env.NEXT_PUBLIC_APP_VERSION}
+          </span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" className="group" asChild>
+                <a
+                  href="https://github.com/guneet-xyz/crui"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <GitHubIcon />
+                  <span className="sr-only">GitHub</span>
+                </a>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>GitHub</TooltipContent>
+          </Tooltip>
+          <ThemeToggle />
+          {isAuthenticated && onLogout && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" onClick={onLogout}>
+                  <LogOut className="h-4 w-4" />
+                  <span className="sr-only">Logout</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Logout</TooltipContent>
+            </Tooltip>
+          )}
+        </TooltipProvider>
       </div>
     </header>
   )
