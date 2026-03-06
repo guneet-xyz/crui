@@ -1,5 +1,7 @@
 "use client"
 
+import { useEffect, useState } from "react"
+
 import { useTheme } from "next-themes"
 
 import { Button } from "~/components/ui/button"
@@ -13,6 +15,11 @@ import { ThemeIcon } from "./icons"
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <Tooltip>
@@ -23,7 +30,7 @@ export function ThemeToggle() {
           className="group"
           onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
         >
-          <ThemeIcon theme={resolvedTheme} />
+          {mounted && <ThemeIcon theme={resolvedTheme} />}
           <span className="sr-only">Toggle theme</span>
         </Button>
       </TooltipTrigger>
