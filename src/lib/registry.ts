@@ -1,7 +1,7 @@
 import { env } from "~/env"
 import type { Credentials } from "~/lib/session"
 
-const REGISTRY_URL = env.REGISTRY_URL.replace(/\/$/, "")
+const REGISTRY_URL = (env.REGISTRY_URL ?? "").replace(/\/$/, "")
 
 const MANIFEST_ACCEPT_HEADERS = [
   "application/vnd.oci.image.index.v1+json",
