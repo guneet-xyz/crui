@@ -10,7 +10,8 @@ const config = {
   output: "standalone",
   reactStrictMode: true,
   env: {
-    NEXT_PUBLIC_APP_VERSION: packageJson.version,
+    NEXT_PUBLIC_APP_VERSION:
+      process.env.NEXT_PUBLIC_APP_VERSION ?? packageJson.version,
   },
 }
 
