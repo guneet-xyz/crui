@@ -5,6 +5,7 @@ import { Box, LogOut } from "lucide-react"
 import { Button } from "~/components/ui/button"
 import { Separator } from "~/components/ui/separator"
 
+import { GitHubIcon } from "./icons"
 import { ThemeToggle } from "./theme-toggle"
 
 interface HeaderProps {
@@ -29,6 +30,16 @@ export function Header({
         </span>
       </div>
       <div className="flex items-center gap-2">
+        <Button variant="ghost" size="icon" className="group" asChild>
+          <a
+            href="https://github.com/guneet-xyz/crui"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <GitHubIcon />
+            <span className="sr-only">GitHub</span>
+          </a>
+        </Button>
         <ThemeToggle />
         {isAuthenticated && onLogout && (
           <Button variant="ghost" size="icon" onClick={onLogout}>
